@@ -5,7 +5,7 @@ import Chart from "chart.js/auto";
 
 const weights = ref([]);
 
-const wightChartEl = ref(null);
+const weightChartEl = ref(null);
 
 const weightChart = shallowRef(null);
 
@@ -28,7 +28,7 @@ watch(
     const ws = [...newWeight];
 
     if (weightChart.value) {
-      weightChart.value.date.labels = ws
+      weightChart.value.data.labels = ws
         .sort((a, b) => b.date - a.date)
         .map((w) => new Date(w.date).toLocaleDateString())
         .slice(-7);
@@ -37,16 +37,13 @@ watch(
         .sort((a, b) => b.date - a.date)
         .map((w) => w.weight)
         .slice(-7)),
-
-
         weightChart.value.update();
 
-
-        return
+      return;
     }
 
     nextTick(() => {
-      weightChart.value = new Chart(wightChartEl.value.getContext("2d"), {
+      weightChart.value = new Chart(weightChartEl.value.getContext("2d"), {
         type: "line",
         data: {
           labels: ws
@@ -56,7 +53,7 @@ watch(
             {
               label: "weight",
               data: ws.sort((a, b) => b.date - a.date).map((w) => w.weight),
-              backgrounfColor: "rgba(255,105,180,0.2)",
+              backgroundColor: "rgba(255,105,180,0.2)",
               borderColor: "rgb(255,105,180)",
               borderWidth: 1,
               fill: true,
@@ -93,7 +90,7 @@ watch(
       <h2>Last 7 Days</h2>
 
       <div class="canvas-box">
-        <canvas ref="wightChartEl"> </canvas>
+        <canvas ref="weightChartEl"> </canvas>
       </div>
 
       <div class="weight-history">
